@@ -1,5 +1,6 @@
 <?php
 
+use Eway\Rapid\Customer;
 //Include RapidAPI Library
 require(dirname(__FILE__).'/../thirdparty/Rapid3.0.php');
 
@@ -55,8 +56,40 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 		//Method for this request. e.g. ProcessPayment, Create TokenCustomer, Update TokenCustomer & TokenPayment
 		$request->Method = 'ProcessPayment';
 		
-		//TODO Hook for setting data on request
-
+		//adding customer details for this request
+		if(isset($data['Customer'])){
+			if($data['Customer'] instanceof Customer){
+				
+				$request->Customer = $data['Customer'];
+				
+			}else{	
+				$EwayCustomerVars = get_object_vars($request->Customer);
+					
+				foreach ($EwayCustomerVars as $name => $value){
+					if(isset($data['Customer'][$name])){
+						$request->Customer->$name = $data['Customer'][$name];
+					}
+				}
+			}
+		}
+		
+		//adding shipping details
+		if(isset($data['ShippingAddress'])){
+			if($data['ShippingAddress'] instanceof ShippingAddress){
+		
+				$request->ShippingAddress = $data['ShippingAddress'];
+		
+			}else{
+				$EwayShippingAddressVars = get_object_vars($request->ShippingAddress);
+					
+				foreach ($EwayShippingAddressVars as $name => $value){
+					if(isset($data['ShippingAddress'][$name])){
+						$request->ShippingAddress->$name = $data['ShippingAddress'][$name];
+					}
+				}
+			}
+		}
+		
 		//Call RapidAPI
 		$result = $service->CreateAccessCode($request);
 
