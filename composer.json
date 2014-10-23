@@ -1,0 +1,23 @@
+{
+	"name" : "internetrix/silverstripe-paymentpage",
+	"description" : "A forked silverstripe payment module for eway",
+	"type" : "silverstripe-module",
+	"homepage" : "https://github.com/Internetrix/silverstripe-paymentpage",
+	"keywords" : [
+		"silverstripe",
+		"payment",
+		"eway"
+	],
+	"authors" : [{
+			"name" : "Jason Zhang",
+			"email" : "jason.zhang@internetrix.com.au"
+		}
+	],
+	"require" : {
+		"silverstripe/framework" : "~3.1",
+		"silverstripe/payment" : "1.0.x-dev"
+	},
+	"extra" : {
+		"installer-name" : "payment-eway"
+	}
+}
