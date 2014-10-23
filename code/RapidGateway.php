@@ -11,6 +11,13 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 		'AUD' => 'Australian Dollar'
 	);
 	
+	protected $ValidRequestMethod = array(
+		'ProcessPayment',
+		'CreateTokenCustomer',
+		'UpdateTokenCustomer',
+		'TokenPayment'	
+	);
+	
 	public function __construct() {
 		//Our gateway URL is on the local site
 		$this->gatewayURL = Director::absoluteURL('/Rapid/pay');
@@ -54,7 +61,11 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 		$request->RedirectUrl = $this->returnURL;
 
 		//Method for this request. e.g. ProcessPayment, Create TokenCustomer, Update TokenCustomer & TokenPayment
-		$request->Method = 'ProcessPayment';
+		if(isset($data['Method']) && in_array($data['Method'], $this->ValidRequestMethod)){
+			$request->Method = $data['Method'];
+		}else{
+			$request->Method = 'ProcessPayment';
+		}
 		
 		//adding customer details for this request
 		if(isset($data['Customer'])){
