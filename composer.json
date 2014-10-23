@@ -1,8 +1,8 @@
 {
-	"name" : "internetrix/silverstripe-paymentpage",
+	"name" : "internetrix/silverstripe-payment-eway",
 	"description" : "A forked silverstripe payment module for eway",
 	"type" : "silverstripe-module",
-	"homepage" : "https://github.com/Internetrix/silverstripe-paymentpage",
+	"homepage" : "https://github.com/Internetrix/silverstripe-payment-eway",
 	"keywords" : [
 		"silverstripe",
 		"payment",
