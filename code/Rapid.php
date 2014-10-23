@@ -1,6 +1,8 @@
 <?php
 
 class Rapid extends Page_Controller {
+	
+	private static $allow_ajax_payment = true;
 
 	/**
 	 * Controller action for showing payment form
@@ -58,6 +60,14 @@ class Rapid extends Page_Controller {
 		$form->setFormAction($response->FormActionURL);
 		
 		$this->extend('updatePayForm', $form);
+		
+		if($this->request->isAjax() && $this->config()->get('allow_ajax_payment') === true){
+			return Convert::array2json(array(
+				'form' 		=> $form->forTemplate(),
+				'formurl' 	=> $response->FormActionURL
+			));
+		}
+		
 		return $form;
 	}
 
