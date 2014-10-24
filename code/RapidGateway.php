@@ -59,6 +59,11 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 		//Url to the page for getting the result with an AccessCode
 		//Note: RedirectUrl is a Required Field For all cases
 		$request->RedirectUrl = $this->returnURL;
+		
+		//setup custom gatewayURL. e.g. multi setp form or ajax payment form
+		if(isset($data['gatewayURL']) && $data['gatewayURL']){
+			$this->gatewayURL = $data['gatewayURL'];
+		}
 
 		//Method for this request. e.g. ProcessPayment, Create TokenCustomer, Update TokenCustomer & TokenPayment
 		if(isset($data['Method']) && in_array($data['Method'], $this->ValidRequestMethod)){
@@ -124,18 +129,25 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 			return new PaymentGateway_Failure(null, array($lblError));
 		} 
 		else {
-
-			Session::set('EwayResponse', $result);
-
-			$postData = array(
-				'Amount' => $data['Amount'],
-				'Currency' => $data['Currency'],
-				'ReturnURL' => $this->returnURL
-			);
 			
-			$queryString = http_build_query($postData);
-			Controller::curr()->redirect($this->gatewayURL . '?' . $queryString);
-			return;
+			Session::set('EwayResponse', $result);
+			
+			if(isset($data['doRedirect']) && $data['doRedirect'] == false){
+				//no redirection required.
+				return;				
+			}else{
+				//Redirect to 'gatewayURL' to process payment
+				
+				$postData = array(
+					'Amount' => $data['Amount'],
+					'Currency' => $data['Currency'],
+					'ReturnURL' => $this->returnURL
+				);
+				
+				$queryString = http_build_query($postData);
+				Controller::curr()->redirect($this->gatewayURL . '?' . $queryString);
+				return;
+			}
 		}
 	}
 	
