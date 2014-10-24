@@ -1,7 +1,7 @@
 <?php
 
 class Rapid extends Page_Controller {
-
+	
 	/**
 	 * Controller action for showing payment form
 	 *
@@ -23,7 +23,7 @@ class Rapid extends Page_Controller {
 		
 		$request = $this->getRequest();
 		$response = Session::get('EwayResponse');
-		
+
 		$months = array('01','02','03','04','05','06','07','08','09','10','11','12');
 		$years = range(date('y'), date('y') + 10); //Note: years beginning with 0 might cause issues
 
@@ -38,7 +38,8 @@ class Rapid extends Page_Controller {
 			// TextField::create('EWAY_CARDSTARTYEAR', 'Valid from year', ''), //UK only
 			// TextField::create('EWAY_CARDISSUENUMBER', 'Issue number', ''),
 			
-			$cvnField = TextField::create('EWAY_CARDCVN', 'CVN Number')
+			$cvnField = TextField::create('EWAY_CARDCVN', 'CVN Number'),
+			HiddenField::create('FormActionURL', '', $response->FormActionURL)
 		);
 		
 		//Test data
