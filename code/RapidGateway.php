@@ -83,7 +83,12 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 					
 				foreach ($EwayCustomerVars as $name => $value){
 					if(isset($data['Customer'][$name])){
-						$request->Customer->$name = $data['Customer'][$name];
+						if($name == 'Phone' || $name == 'Mobile' || $name == 'Fax'){
+							//remove illegal characters
+							$request->Customer->$name = $this->ParsePhoneNumber($data['Customer'][$name]);
+						}else{
+							$request->Customer->$name = $data['Customer'][$name];
+						}
 					}
 				}
 			}
@@ -100,7 +105,12 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 					
 				foreach ($EwayShippingAddressVars as $name => $value){
 					if(isset($data['ShippingAddress'][$name])){
-						$request->ShippingAddress->$name = $data['ShippingAddress'][$name];
+						if($name == 'Phone' || $name == 'Mobile' || $name == 'Fax'){
+							//remove illegal characters
+							$request->ShippingAddress->$name = $this->ParsePhoneNumber($data['ShippingAddress'][$name]);
+						}else{
+							$request->ShippingAddress->$name = $data['ShippingAddress'][$name];
+						}
 					}
 				}
 			}
@@ -194,6 +204,16 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
     }
     return $this->supportedCurrencies;
   }
+  
+  	/**
+  	 * Phone, Mobile, Fax field are accept 0-9, +, (, )
+  	 * 
+  	 * @param string $phone
+  	 * @return string
+  	 */
+	public function ParsePhoneNumber($phone){
+		return preg_replace('/[^0-9,(,),+]/','',$phone);
+	}
 }
 
 class RapidGateway_Mock extends RapidGateway { 
