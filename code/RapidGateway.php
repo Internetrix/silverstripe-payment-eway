@@ -55,6 +55,8 @@ class RapidGateway extends PaymentGateway_GatewayHosted {
 		//Note: TotalAmount is a Required Field When Process a Payment, TotalAmount should set to "0" or leave EMPTY when Create/Update A TokenCustomer
 		$request->Payment->TotalAmount = $data['Amount'] * 100; //Total amount is in cents
 		$request->Payment->CurrencyCode = $data['Currency'];
+		$request->Payment->InvoiceReference = isset($data['Reference']) ? $data['Reference'] : '';
+		$request->Payment->InvoiceDescription = isset($data['InvoiceDescription']) ? $data['InvoiceDescription'] : '';
 
 		//Url to the page for getting the result with an AccessCode
 		//Note: RedirectUrl is a Required Field For all cases
