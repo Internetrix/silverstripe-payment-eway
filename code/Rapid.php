@@ -27,8 +27,13 @@ class Rapid extends Page_Controller {
 		$months = array('01','02','03','04','05','06','07','08','09','10','11','12');
 		$years = range(date('y'), date('y') + 10); //Note: years beginning with 0 might cause issues
 
+		$amount 	= $response->Payment->TotalAmount;
+		$amount 	= number_format($amount / 100, 2);
+		$currency 	= $response->Payment->CurrencyCode;
+		
 		$fields = new FieldList(
 			HiddenField::create('EWAY_ACCESSCODE', '', $response->AccessCode),
+			TextField::create('PayAmount', 'Amount', $amount . ' ' . $currency)->setDisabled(true),
 			$nameField = TextField::create('EWAY_CARDNAME', 'Card holder'),
 			$numberField = TextField::create('EWAY_CARDNUMBER', 'Card Number'),
 			$expMonthField = DropdownField::create('EWAY_CARDEXPIRYMONTH', 'Expiry Month', array_combine($months, $months)),
