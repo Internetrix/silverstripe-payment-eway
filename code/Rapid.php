@@ -58,7 +58,12 @@ class Rapid extends Page_Controller {
 		$form = new Form($this, 'PayForm', $fields, $actions);
 		$form->setFormAction($response->FormActionURL);
 		
+		Requirements::javascript(FRAMEWORK_DIR .'/thirdparty/jquery/jquery.js');
+		Requirements::javascript(THIRDPARTY_DIR . '/jquery-entwine/dist/jquery.entwine-dist.js');
+		Requirements::javascript('payment-eway/javascript/eway-form.js');
+		
 		$this->extend('updatePayForm', $form);
+		
 		return $form;
 	}
 
