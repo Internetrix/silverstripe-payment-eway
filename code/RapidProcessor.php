@@ -1,5 +1,5 @@
 <?php
 
-class RapidProcessor extends PaymentProcessor_GatewayHosted {
-
+class RapidProcessor extends PaymentProcessor_GatewayHosted
+{
 }
